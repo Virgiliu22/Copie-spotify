@@ -325,7 +325,7 @@ async function renderPlaylist(type) {
     
     let tracks = [];
     if (type === 'liked') {
-        titleEl.textContent = 'Liked Songs';
+        titleEl.textContent = 'Favorite Songs';
         imgEl.src = 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=400&h=400&fit=crop';
         tracks = likedSongs;
     } else {
@@ -380,7 +380,7 @@ function toggleLike(track) {
     localStorage.setItem('spotify_liked_songs', JSON.stringify(likedSongs));
     
     if (document.getElementById('playlist-view').style.display === 'block' && 
-        document.getElementById('playlist-title').textContent === 'Liked Songs') {
+        document.getElementById('playlist-title').textContent === 'Favorite Songs') {
         renderPlaylist('liked');
     }
 }
