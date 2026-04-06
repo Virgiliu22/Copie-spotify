@@ -137,7 +137,7 @@ header button:hover {
 .card {
   background-color: #181818;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: 20px;
   transition: all var(--transition-speed) cubic-bezier(0.3, 0, 0, 1);
   cursor: pointer;
   position: relative;
