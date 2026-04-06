@@ -11,7 +11,7 @@
 
   --text-base: #ffffff;
   --text-subdued: #b3b3b3;
-  --text-bright-accent: #ff0000;
+  --text-bright-accent: #1ed760;
   --text-negative: #f15e6c;
   --text-warning: #ffa42d;
   --text-positive: #1ed760;
@@ -46,7 +46,7 @@ body {
 /* Sidebar Styling */
 .sidebar {
   grid-area: sidebar;
-  background-color: #111;
+  background-color: var(--background-base);
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -137,7 +137,7 @@ header button:hover {
 .card {
   background-color: #181818;
   padding: 16px;
-  border-radius: 20px;
+  border-radius: 12px;
   transition: all var(--transition-speed) cubic-bezier(0.3, 0, 0, 1);
   cursor: pointer;
   position: relative;
@@ -220,8 +220,8 @@ header button:hover {
 .play-pause-btn {
   background: var(--text-base);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
