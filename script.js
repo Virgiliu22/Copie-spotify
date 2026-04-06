@@ -11,7 +11,7 @@ let shuffledQueue = [];
 let currentIndex = -1;
 
 const userProfile = {
-    name: "Grigorii Gainaru & Vergiliu Zagorodniuc",
+    name: "My account",
     avatar: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=500&fit=crop", // BMW Lights Avatar
     followers: 143,
     following: 90,
