@@ -46,7 +46,7 @@ body {
 /* Sidebar Styling */
 .sidebar {
   grid-area: sidebar;
-  background-color: var(--background-base);
+  background-color: #111;
   padding: 8px;
   display: flex;
   flex-direction: column;
