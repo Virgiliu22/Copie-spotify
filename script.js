@@ -500,15 +500,14 @@ searchInput.addEventListener('input', (e) => {
 });
 
 init();
+// 1. Selectăm butonul nou de Stop
+const stopBtn = document.getElementById('stop-btn');
 
-// Face butonul mare de Play să funcționeze
-playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-        audio.play();
-        playPauseIcon.setAttribute('data-lucide', 'pause'); // Schimbă în pauză
-    } else {
-        audio.pause();
-        playPauseIcon.setAttribute('data-lucide', 'play'); // Schimbă în play
-    }
-    lucide.createIcons(); // Reîmprospătează iconițele vizual
+// 2. Îi spunem ce să facă la click
+stopBtn.addEventListener('click', () => {
+    audio.pause();           // Oprește sunetul
+    audio.currentTime = 0;   // Resetează melodia la început
+    
+    playPauseIcon.setAttribute('data-lucide', 'play');
+    lucide.createIcons();
 });
