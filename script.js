@@ -500,4 +500,15 @@ searchInput.addEventListener('input', (e) => {
 });
 
 init();
+// 1. Selectăm butonul nou de Stop
+const stopBtn = document.getElementById('stop-btn');
 
+// 2. Îi spunem ce să facă la click
+stopBtn.addEventListener('click', () => {
+    audio.pause();           // Oprește sunetul
+    audio.currentTime = 0;   // Resetează melodia la început
+    
+    // Schimbăm iconița de Play/Pause înapoi pe "Play"
+    playPauseIcon.setAttribute('data-lucide', 'play');
+    lucide.createIcons();
+});
