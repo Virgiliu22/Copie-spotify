@@ -121,6 +121,7 @@ header {
 
 header button:hover {
     transform: scale(1.04);
+    opacity: 0.8;
 }
 
 .content-section {
