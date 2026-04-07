@@ -500,3 +500,15 @@ searchInput.addEventListener('input', (e) => {
 });
 
 init();
+
+// Face butonul mare de Play să funcționeze
+playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        playPauseIcon.setAttribute('data-lucide', 'pause'); // Schimbă în pauză
+    } else {
+        audio.pause();
+        playPauseIcon.setAttribute('data-lucide', 'play'); // Schimbă în play
+    }
+    lucide.createIcons(); // Reîmprospătează iconițele vizual
+});
