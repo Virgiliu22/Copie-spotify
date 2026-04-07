@@ -508,7 +508,6 @@ stopBtn.addEventListener('click', () => {
     audio.pause();           // Oprește sunetul
     audio.currentTime = 0;   // Resetează melodia la început
     
-    // Schimbăm iconița de Play/Pause înapoi pe "Play"
     playPauseIcon.setAttribute('data-lucide', 'play');
     lucide.createIcons();
 });
