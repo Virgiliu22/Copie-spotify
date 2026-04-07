@@ -11,7 +11,7 @@ let shuffledQueue = [];
 let currentIndex = -1;
 
 const userProfile = {
-    name: "My account",
+    name: "Grigorii Gainaru & Vergiliu Zagorodniuc",
     avatar: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=500&fit=crop", // BMW Lights Avatar
     followers: 143,
     following: 90,
@@ -325,7 +325,7 @@ async function renderPlaylist(type) {
     
     let tracks = [];
     if (type === 'liked') {
-        titleEl.textContent = 'Favorite Songs';
+        titleEl.textContent = 'Liked Songs';
         imgEl.src = 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=400&h=400&fit=crop';
         tracks = likedSongs;
     } else {
@@ -380,7 +380,7 @@ function toggleLike(track) {
     localStorage.setItem('spotify_liked_songs', JSON.stringify(likedSongs));
     
     if (document.getElementById('playlist-view').style.display === 'block' && 
-        document.getElementById('playlist-title').textContent === 'Favorite Songs') {
+        document.getElementById('playlist-title').textContent === 'Liked Songs') {
         renderPlaylist('liked');
     }
 }
@@ -500,14 +500,3 @@ searchInput.addEventListener('input', (e) => {
 });
 
 init();
-// 1. Selectăm butonul nou de Stop
-const stopBtn = document.getElementById('stop-btn');
-
-// 2. Îi spunem ce să facă la click
-stopBtn.addEventListener('click', () => {
-    audio.pause();           // Oprește sunetul
-    audio.currentTime = 0;   // Resetează melodia la început
-    
-    playPauseIcon.setAttribute('data-lucide', 'play');
-    lucide.createIcons();
-});
