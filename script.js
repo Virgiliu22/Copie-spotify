@@ -12,7 +12,7 @@ let currentIndex = -1;
 
 const userProfile = {
     name: "Grigorii Gainaru & Vergiliu Zagorodniuc",
-    avatar: "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=500&h=500&fit=crop", // BMW Lights Avatar
+    avatar: "images/avatar.jpg", // White BMW Front View Avatar
     followers: 143,
     following: 90,
     playlists: 10
@@ -21,7 +21,7 @@ const userProfile = {
 // --- DOM Elements ---
 const audio = document.getElementById('spotify-audio');
 const playPauseBtn = document.getElementById('play-pause-btn-main');
-const playPauseIcon = playPauseBtn.querySelector('i');
+// Removed stale playPauseIcon reference
 const progressFill = document.querySelector('.progress-fill');
 const currentTimeEl = document.querySelector('.progress-bar-container span:first-child');
 const totalTimeEl = document.querySelector('.progress-bar-container span:last-child');
@@ -59,6 +59,14 @@ const fsNextBtn = document.getElementById('fs-next-btn');
 const fsShuffleBtn = document.getElementById('fs-shuffle-btn');
 const fsRepeatBtn = document.getElementById('fs-repeat-btn');
 
+const categoryImages = {
+    'podcasts': 'images/podcasts.jpg',
+    'made for you': 'images/made_for_you.jpg',
+    'new releases': 'images/new_releases.jpg',
+    'pop': 'images/pop.jpg',
+    'chill': 'images/chill_vibes.jpg'
+};
+
 // --- Initialization ---
 function init() {
     lucide.createIcons();
@@ -77,7 +85,7 @@ function updateUserUI() {
     document.getElementById('profile-name').textContent = userProfile.name;
     document.getElementById('profile-avatar-img').src = userProfile.avatar;
     const userBtn = document.getElementById('user-btn');
-    userBtn.innerHTML = `<img src="${userProfile.avatar}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">`;
+    userBtn.innerHTML = `<img src="${userProfile.avatar}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">`;
 }
 
 // --- View Switching ---
@@ -102,7 +110,11 @@ document.getElementById('nav-search').addEventListener('click', () => showView('
 document.getElementById('go-profile').addEventListener('click', () => showView('profile-view'));
 
 document.querySelectorAll('.playlist-item').forEach(item => {
-    item.addEventListener('click', () => renderPlaylist(item.getAttribute('data-id')));
+    item.addEventListener('click', () => {
+        const id = item.getAttribute('data-id');
+        const color = id === 'liked' ? '#5038a0' : id === 'chill' ? '#4687d7' : '#1db954';
+        renderPlaylist(id, color);
+    });
 });
 
 // User Menu
@@ -148,21 +160,17 @@ function toggleRepeat() {
 }
 
 function updateControlUI() {
-    // Main UI
+    // Main UI classes
     shuffleBtn.classList.toggle('control-active', isShuffle);
     fsShuffleBtn.classList.toggle('control-active', isShuffle);
     
-    // Repeat UI logic
     repeatBtn.classList.toggle('control-active', repeatMode > 0);
     fsRepeatBtn.classList.toggle('control-active', repeatMode > 0);
     
-    if (repeatMode === 2) {
-        repeatBtn.setAttribute('data-lucide', 'repeat-1');
-        fsRepeatBtn.setAttribute('data-lucide', 'repeat-1');
-    } else {
-        repeatBtn.setAttribute('data-lucide', 'repeat');
-        fsRepeatBtn.setAttribute('data-lucide', 'repeat');
-    }
+    // Repeat Icon swap
+    const repeatIcon = repeatMode === 2 ? 'repeat-1' : 'repeat';
+    repeatBtn.innerHTML = `<i data-lucide="${repeatIcon}" size="18"></i>`;
+    fsRepeatBtn.innerHTML = `<i data-lucide="${repeatIcon}" size="24"></i>`;
     
     updateIcons();
 }
@@ -294,12 +302,12 @@ closeFullScreenBtn.onclick = () => {
 function renderHome() {
     const homeGrid = document.getElementById('home-grid');
     const mockData = [
-        { trackId: 'm1', trackName: 'Today\'s Top Hits', artistName: 'Grigorii Gainaru & Vergiliu Zagorodniuc', artworkUrl100: 'https://picsum.photos/seed/hits/400/400', previewUrl: '' },
-        { trackId: 'm2', trackName: 'Jazz Classics', artistName: 'Gentle Piano', artworkUrl100: 'https://picsum.photos/seed/jazz/400/400', previewUrl: '' },
-        { trackId: 'm3', trackName: 'Rock Legends', artistName: 'Masterpieces', artworkUrl100: 'https://picsum.photos/seed/rock/400/400', previewUrl: '' },
-        { trackId: 'm4', trackName: 'Chill Vibes', artistName: 'Liquid Gold', artworkUrl100: 'https://picsum.photos/seed/chill/400/400', previewUrl: '' },
-        { trackId: 'm5', trackName: 'Night Rider', artistName: 'BMW Lights Night', artworkUrl100: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=400&fit=crop', previewUrl: '' },
-        { trackId: 'm6', trackName: 'Pop Rising', artistName: 'Daily Dose', artworkUrl100: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=400&h=400&fit=crop', previewUrl: '' }
+        { trackId: 'm1', trackName: 'Today\'s Top Hits', artistName: 'Grigorii Gainaru & Vergiliu Zagorodniuc', artworkUrl100: 'images/hits.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+        { trackId: 'm2', trackName: 'Jazz Classics', artistName: 'Gentle Piano', artworkUrl100: 'images/jazz.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+        { trackId: 'm3', trackName: 'Rock Legends', artistName: 'Masterpieces', artworkUrl100: 'images/rock.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+        { trackId: 'm4', trackName: 'Chill Vibes', artistName: 'Liquid Gold', artworkUrl100: 'images/chill_vibes.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+        { trackId: 'm5', trackName: 'Night Rider', artistName: 'BMW Lights Night', artworkUrl100: 'images/night_rider.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' },
+        { trackId: 'm6', trackName: 'Pop Rising', artistName: 'Daily Dose', artworkUrl100: 'images/made_for_you.jpg', previewUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' }
     ];
 
     homeGrid.innerHTML = '';
@@ -311,27 +319,40 @@ function renderHome() {
             <div class="card-title">${item.trackName}</div>
             <p class="card-description">${item.artistName}</p>
         `;
-        card.onclick = () => renderPlaylist(item.trackName.toLowerCase().includes('chill') ? 'chill' : 'other');
+        card.onclick = () => {
+            const isChill = item.trackName.toLowerCase().includes('chill');
+            const isPop = item.trackName.toLowerCase().includes('pop');
+            const color = isChill ? '#4687d7' : isPop ? '#2d46b9' : '#1db954';
+            renderPlaylist(isChill ? 'chill' : isPop ? 'pop' : item.trackName.toLowerCase(), color);
+        };
         homeGrid.appendChild(card);
     });
 }
 
 // --- Playlist View Logic ---
-async function renderPlaylist(type) {
+async function renderPlaylist(type, color = '#1db954') {
     const titleEl = document.getElementById('playlist-title');
     const imgEl = document.getElementById('playlist-img');
     const trackCountEl = document.getElementById('playlist-track-count');
     const tracksContainer = document.getElementById('playlist-tracks');
     
+    // Dynamic background theme
+    document.querySelector('.playlist-header').style.background = `linear-gradient(to bottom, ${color}99, var(--background-elevated-base))`;
+
     let tracks = [];
     if (type === 'liked') {
         titleEl.textContent = 'Liked Songs';
-        imgEl.src = 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=400&h=400&fit=crop';
+        imgEl.src = 'images/favorite_songs.jpg';
         tracks = likedSongs;
     } else {
-        titleEl.textContent = 'Chill Vibes';
-        imgEl.src = 'https://picsum.photos/seed/playlist/400/400';
-        const response = await fetch(`https://itunes.apple.com/search?term=chill&media=music&limit=15`);
+        titleEl.textContent = type.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        imgEl.src = categoryImages[type] || 'images/chill_vibes.jpg';
+        
+        tracksContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--text-subdued);">Loading songs...</div>';
+        showView('playlist-view');
+
+        const searchTerm = type === 'made for you' ? 'hits' : type === 'new releases' ? '2024 hits' : type;
+        const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=music&limit=25`);
         const data = await response.json();
         tracks = data.results;
     }
@@ -355,10 +376,10 @@ async function renderPlaylist(type) {
                     <span style="font-size: 13px; opacity: 0.6;">${track.artistName}</span>
                 </div>
             </div>
-            <span style="font-size: 13px;">${track.collectionName || 'Single'}</span>
+            <span>${track.collectionName || 'Single'}</span>
             <div style="display: flex; gap: 14px; align-items: center;">
                 <i data-lucide="heart" class="${isLiked ? 'active-heart' : ''}" style="width: 18px; cursor: pointer;" onclick="event.stopPropagation(); toggleLikeById('${track.trackId}')"></i>
-                <span style="font-size: 13px;">3:45</span>
+                <span style="font-size: 13px;">${formatDuration(track.trackTimeMillis)}</span>
             </div>
         `;
         row.onclick = () => playTrack(track);
@@ -428,17 +449,20 @@ function playTrack(track) {
 playPauseBtn.addEventListener('click', () => { if (!audio.src) return; isPlaying ? audio.pause() : audio.play(); });
 fsPlayPauseBtn.addEventListener('click', () => { if (!audio.src) return; isPlaying ? audio.pause() : audio.play(); });
 
+function updatePlayPauseUI() {
+    const icon = isPlaying ? 'pause' : 'play';
+    playPauseBtn.innerHTML = `<i data-lucide="${icon}" fill="black" size="20"></i>`;
+    fsPlayPauseBtn.innerHTML = `<i data-lucide="${icon}" fill="#000" size="36"></i>`;
+    updateIcons();
+}
+
 audio.onplay = () => { 
     isPlaying = true; 
-    playPauseIcon.setAttribute('data-lucide', 'pause'); 
-    fsPlayPauseBtn.querySelector('i').setAttribute('data-lucide', 'pause');
-    updateIcons(); 
+    updatePlayPauseUI();
 };
 audio.onpause = () => { 
     isPlaying = false; 
-    playPauseIcon.setAttribute('data-lucide', 'play'); 
-    fsPlayPauseBtn.querySelector('i').setAttribute('data-lucide', 'play');
-    updateIcons(); 
+    updatePlayPauseUI();
 };
 audio.ontimeupdate = () => {
     const progress = (audio.currentTime / audio.duration) * 100;
@@ -452,10 +476,29 @@ audio.onended = () => {
     playNext(true);
 };
 
+// Seeking Logic
+document.querySelector('.progress-bar').addEventListener('click', (e) => {
+    if (!audio.duration) return;
+    const bar = e.currentTarget;
+    const rect = bar.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+    const percentage = x / width;
+    audio.currentTime = percentage * audio.duration;
+});
+
 function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
+function formatDuration(ms) {
+    if (!ms) return "0:30";
+    const totalSeconds = Math.floor(ms / 1000);
+    const min = Math.floor(totalSeconds / 60);
+    const sec = totalSeconds % 60;
     return `${min}:${sec < 10 ? '0' : ''}${sec}`;
 }
 

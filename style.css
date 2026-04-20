@@ -235,6 +235,35 @@ header button:hover {
   transform: scale(1.1);
 }
 
+.player-control-btn, .player-extra-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.1s, color 0.2s;
+  color: var(--text-subdued);
+}
+
+.player-control-btn:hover, .player-extra-btn:hover {
+  transform: scale(1.05);
+  color: var(--text-base);
+}
+
+.player-control-btn:active, .player-extra-btn:active {
+  transform: scale(0.95);
+}
+
+.player-control-btn.control-active {
+  color: var(--text-positive) !important;
+}
+
+.player-control-btn i, .player-control-btn svg {
+  color: inherit;
+}
+
 .progress-bar-container {
   width: 100%;
   max-width: 600px;

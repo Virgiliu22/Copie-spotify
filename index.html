@@ -30,9 +30,9 @@
 
       <div style="flex:1; overflow-y: auto; margin-top: 20px; display: flex; flex-direction: column; gap: 16px; scrollbar-width: none;" id="sidebar-playlists">
         <div class="nav-item playlist-item" data-id="liked" style="font-size: 14px; font-weight: 400;"><img
-            src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=48&h=48&fit=crop" style="border-radius: 4px; width: 48px;">Favorite Songs</div>
+            src="images/favorite_songs.jpg" style="border-radius: 4px; width: 48px;">Favorite Songs</div>
         <div class="nav-item playlist-item" data-id="chill" style="font-size: 14px; font-weight: 400;"><img
-            src="https://picsum.photos/seed/playlist/48/48" style="border-radius: 4px; width: 48px;">Chill Vibes</div>
+            src="images/chill_vibes.jpg" style="border-radius: 4px; width: 48px;">Chill Vibes</div>
       </div>
     </div>
   </aside>
@@ -83,21 +83,21 @@
       <div id="browse-all-container">
         <h3 style="font-size: 24px; margin-bottom: 16px; font-weight: 900; letter-spacing: -0.5px;">Browse all</h3>
         <div class="grid-container" id="category-grid">
-          <div class="category-card" style="background: linear-gradient(135deg, #27856A 0%, #1E3264 100%);">
+          <div class="category-card" style="background: linear-gradient(135deg, #27856A 0%, #1E3264 100%);" onclick="renderPlaylist('podcasts', '#27856A')">
             <span class="card-title">Podcasts</span>
-            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=300&h=300&fit=crop" alt="Podcasts" onerror="this.style.display='none'">
+            <img src="images/podcasts.jpg" alt="Podcasts" onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #1E3264 0%, #4D4D4D 100%);">
+          <div class="category-card" style="background: linear-gradient(135deg, #1E3264 0%, #4D4D4D 100%);" onclick="renderPlaylist('made for you', '#1E3264')">
             <span class="card-title">Made for You</span>
-            <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300&h=300&fit=crop" alt="Made for You" onerror="this.style.display='none'">
+            <img src="images/made_for_you.jpg" alt="Made for You" onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #E8115B 0%, #8D67AB 100%);">
+          <div class="category-card" style="background: linear-gradient(135deg, #E8115B 0%, #8D67AB 100%);" onclick="renderPlaylist('new releases', '#E8115B')">
             <span class="card-title">New Releases</span>
-            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop" alt="New Releases" onerror="this.style.display='none'">
+            <img src="images/new_releases.jpg" alt="New Releases" onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #2D46B9 0%, #1E3264 100%);">
+          <div class="category-card" style="background: linear-gradient(135deg, #2D46B9 0%, #1E3264 100%);" onclick="renderPlaylist('pop', '#2D46B9')">
             <span class="card-title">Pop</span>
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&h=300&fit=crop" alt="Pop" onerror="this.style.display='none'">
+            <img src="images/pop.jpg" alt="Pop" onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@
   <!-- Player Bar -->
   <footer class="player-bar">
     <div class="now-playing">
-      <img src="https://picsum.photos/seed/current/56/56" alt="Current Track">
+      <img src="images/chill_vibes.jpg" alt="Current Track">
       <div style="display: flex; flex-direction: column; gap: 4px; overflow: hidden; max-width: 180px;">
         <span style="font-size: 14px; font-weight: 400; cursor: pointer; color: white; white-space: nowrap; text-overflow: ellipsis;" id="current-track-title">Select a song</span>
         <span style="font-size: 11px; color: var(--text-subdued); cursor: pointer;" id="current-track-artist">-</span>
@@ -161,11 +161,11 @@
 
     <div class="player-controls">
       <div class="control-buttons">
-        <i data-lucide="shuffle" id="shuffle-btn" style="color: var(--text-subdued); cursor: pointer;" size="18"></i>
-        <i data-lucide="skip-back" id="prev-btn" fill="white" style="cursor: pointer;" size="22"></i>
+        <button class="player-control-btn" id="shuffle-btn"><i data-lucide="shuffle" size="18"></i></button>
+        <button class="player-control-btn" id="prev-btn"><i data-lucide="skip-back" fill="white" size="22"></i></button>
         <button class="play-pause-btn" id="play-pause-btn-main"><i data-lucide="play" fill="black" size="20"></i></button>
-        <i data-lucide="skip-forward" id="next-btn" fill="white" style="cursor: pointer;" size="22"></i>
-        <i data-lucide="repeat" id="repeat-btn" style="color: var(--text-subdued); cursor: pointer;" size="18"></i>
+        <button class="player-control-btn" id="next-btn"><i data-lucide="skip-forward" fill="white" size="22"></i></button>
+        <button class="player-control-btn" id="repeat-btn"><i data-lucide="repeat" size="18"></i></button>
       </div>
       <div class="progress-bar-container">
         <span>0:00</span>
@@ -177,14 +177,14 @@
     </div>
 
     <div class="player-extra">
-      <i data-lucide="mic-2" style="color: var(--text-subdued); cursor: pointer; transition: color 0.2s;" size="16" id="toggle-lyrics"></i>
-      <i data-lucide="list-music" style="color: var(--text-subdued); cursor: pointer;" size="16"></i>
-      <i data-lucide="speaker" style="color: var(--text-subdued); cursor: pointer;" size="16"></i>
+      <button class="player-extra-btn" id="toggle-lyrics"><i data-lucide="mic-2" style="color: var(--text-subdued);" size="16"></i></button>
+      <button class="player-extra-btn"><i data-lucide="list-music" style="color: var(--text-subdued);" size="16"></i></button>
+      <button class="player-extra-btn"><i data-lucide="speaker" style="color: var(--text-subdued);" size="16"></i></button>
       <div style="display: flex; align-items: center; gap: 10px;">
         <i data-lucide="volume-2" style="color: var(--text-subdued);" size="16"></i>
         <input type="range" id="volume-slider" min="0" max="100" value="50">
       </div>
-      <i data-lucide="maximize-2" style="color: var(--text-subdued); cursor: pointer; transition: color 0.2s;" size="16" id="toggle-fullscreen"></i>
+      <button class="player-extra-btn" id="toggle-fullscreen"><i data-lucide="maximize-2" style="color: var(--text-subdued);" size="16"></i></button>
     </div>
   </footer>
 
@@ -198,13 +198,13 @@
       <h2 id="fs-artist" style="font-size: 28px; color: var(--text-subdued); margin-bottom: 48px; font-weight: 500;"></h2>
       
       <div style="display: flex; gap: 48px; align-items: center;">
-          <i data-lucide="shuffle" id="fs-shuffle-btn" size="24" style="cursor: pointer; color: var(--text-subdued);"></i>
-          <i data-lucide="skip-back" id="fs-prev-btn" size="56" fill="white" style="cursor: pointer;"></i>
+          <button class="player-control-btn" id="fs-shuffle-btn"><i data-lucide="shuffle" size="24"></i></button>
+          <button class="player-control-btn" id="fs-prev-btn"><i data-lucide="skip-back" size="56" fill="white"></i></button>
           <button id="fs-play-pause" style="width: 88px; height: 88px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
               <i data-lucide="play" fill="#000" size="36"></i>
           </button>
-          <i data-lucide="skip-forward" id="fs-next-btn" size="56" fill="white" style="cursor: pointer;"></i>
-          <i data-lucide="repeat" id="fs-repeat-btn" size="24" style="cursor: pointer; color: var(--text-subdued);"></i>
+          <button class="player-control-btn" id="fs-next-btn"><i data-lucide="skip-forward" size="56" fill="white"></i></button>
+          <button class="player-control-btn" id="fs-repeat-btn"><i data-lucide="repeat" size="24"></i></button>
       </div>
   </div>
 
