@@ -707,6 +707,25 @@ header button:hover {
   animation: fadeIn 0.8s ease;
 }
 
+.lyrics-header {
+  margin-bottom: 60px;
+  animation: fadeIn 1s ease;
+}
+
+.lyrics-title {
+  font-size: 64px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 8px;
+  letter-spacing: -2px;
+}
+
+.lyrics-artist {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .lyric-line {
   font-size: 52px;
   font-weight: 900;
