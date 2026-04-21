@@ -914,24 +914,77 @@ function renderCustomPlaylist(playlistId, color = "#1db954") {
 
 function createTrackRow(track, index, isLiked) {
     const row = document.createElement("div");
-    row.className = "track-row";
+    row.className = `track-row ${isLiked ? "liked-track" : ""}`;
+    row.dataset.trackId = track.trackId;
     row.innerHTML = `
         <span>${index + 1}</span>
         <div style="display: flex; gap: 14px; align-items: center;">
             <img src="${track.artworkUrl100}" style="width: 44px; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
             <div style="display: flex; flex-direction: column;">
-                <span class="track-title">${track.trackName}</span>
+                <div>
+                    <span class="track-title">${track.trackName}</span>
+                    <i data-lucide="heart" class="mini-heart" size="12" fill="currentColor"></i>
+                </div>
                 <span style="font-size: 13px; opacity: 0.6;">${track.artistName}</span>
             </div>
         </div>
         <span>${track.collectionName || "Single"}</span>
         <div style="display: flex; gap: 14px; align-items: center; justify-content: flex-end;">
-            <i data-lucide="heart" class="${isLiked ? "active-heart" : ""}" style="width: 18px; cursor: pointer;" onclick="event.stopPropagation(); toggleLikeById('${track.trackId}')"></i>
+            <i data-lucide="heart" class="${isLiked ? "active-heart" : ""}" 
+               fill="${isLiked ? "var(--text-bright-accent)" : "none"}"
+               style="width: 18px; cursor: pointer;" 
+               onclick="event.stopPropagation(); toggleLikeById('${track.trackId}')"></i>
             <span style="font-size: 13px;">${formatDuration(track.trackTimeMillis)}</span>
         </div>
     `;
     row.onclick = () => playTrack(track);
     return row;
+}
+
+function updateLikedUI() {
+    if (!currentUser) return;
+    const likedIds = new Set(getLikedSongs().map(s => String(s.trackId)));
+
+    document.querySelectorAll(".track-row, .card").forEach(el => {
+        const id = el.dataset.trackId;
+        if (!id) return;
+
+        const isLiked = likedIds.has(String(id));
+
+        if (el.classList.contains("track-row")) {
+            el.classList.toggle("liked-track", isLiked);
+        } else if (el.classList.contains("card")) {
+            el.classList.toggle("liked-card", isLiked);
+        }
+
+        const hearts = el.querySelectorAll('[data-lucide="heart"]');
+        hearts.forEach(heart => {
+            if (heart.classList.contains('mini-heart')) return;
+
+            heart.classList.toggle("active-heart", isLiked);
+
+            // Set fill attribute (works for both i and svg)
+            const fillValue = isLiked ? "var(--text-bright-accent)" : "none";
+            heart.setAttribute('fill', fillValue);
+
+            // If it's an SVG, we might need to set the style property for fill too if setAttribute doesn't trigger redraw correctly
+            if (heart.tagName.toLowerCase() === 'svg') {
+                heart.style.fill = fillValue;
+            }
+        });
+    });
+
+    // Also update "Favorite Songs" playlist if it's currently open
+    if (
+        currentPlaylistContext &&
+        currentPlaylistContext.type === "custom" &&
+        currentPlaylistContext.id === "favorites"
+    ) {
+        renderCustomPlaylist("favorites", "#5038a0");
+    }
+
+    updatePlayerHeartUI();
+    updateIcons();
 }
 
 function toggleLike(track) {
@@ -947,23 +1000,7 @@ function toggleLike(track) {
     }
 
     setLikedSongs(likedSongs);
-
-    if (
-        document.getElementById("playlist-view") &&
-        document.getElementById("playlist-view").style.display === "block" &&
-        document.getElementById("playlist-title") &&
-        document.getElementById("playlist-title").textContent === "Favorite Songs"
-    ) {
-        renderCustomPlaylist("favorites", "#5038a0");
-    }
-
-    if (
-        currentPlaylistContext &&
-        currentPlaylistContext.type === "custom" &&
-        currentPlaylistContext.id === "favorites"
-    ) {
-        renderCustomPlaylist("favorites", "#5038a0");
-    }
+    updateLikedUI();
 }
 
 window.toggleLikeById = async function (id) {
@@ -981,14 +1018,6 @@ window.toggleLikeById = async function (id) {
 
     if (track) {
         toggleLike(track);
-        updatePlayerHeartUI();
-
-        if (currentPlaylistContext && currentPlaylistContext.type === "custom") {
-            renderCustomPlaylist(
-                currentPlaylistContext.id,
-                currentPlaylistContext.id === "favorites" ? "#5038a0" : "#1db954"
-            );
-        }
     }
 };
 
@@ -1137,13 +1166,21 @@ function setupSearch() {
                     const isLiked = getLikedSongs().some(s => s.trackId === track.trackId);
 
                     const card = document.createElement("div");
-                    card.className = "card";
+                    card.className = `card ${isLiked ? "liked-card" : ""}`;
+                    card.dataset.trackId = track.trackId;
                     card.innerHTML = `
                         <img src="${track.artworkUrl100.replace("100x100", "400x400")}" alt="${track.trackName}">
-                        <div class="card-title">${track.trackName}</div>
+                        <div style="margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                            <div class="card-title" style="margin-bottom: 0;">${track.trackName}</div>
+                            <i data-lucide="heart" class="mini-heart" size="14" fill="currentColor"></i>
+                        </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <p class="card-description">${track.artistName}</p>
-                            <i data-lucide="heart" class="${isLiked ? "active-heart" : ""}" style="width: 18px; cursor: pointer; transition: transform 0.2s;" onclick="event.stopPropagation(); toggleLikeById('${track.trackId}')"></i>
+                            <i data-lucide="heart" 
+                               class="${isLiked ? "active-heart" : ""}" 
+                               fill="${isLiked ? "var(--text-bright-accent)" : "none"}"
+                               style="width: 18px; cursor: pointer; transition: transform 0.2s;" 
+                               onclick="event.stopPropagation(); toggleLikeById('${track.trackId}')"></i>
                         </div>
                     `;
 
