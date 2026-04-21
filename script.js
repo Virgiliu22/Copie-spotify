@@ -738,18 +738,62 @@ function playPrev() {
     playTrack(queue[prevIdx]);
 }
 
-function playTrack(track) {
-    if (!track || !track.previewUrl || !audio) {
-        alert("This track has no preview.");
-        return;
+const pipedInstances = [
+    "https://pipedapi.kavin.rocks",
+    "https://pipedapi.lunar.icu",
+    "https://piped-api.garudalinux.org",
+    "https://api.piped.projectsegfau.lt"
+];
+
+async function fetchFullAudioUrl(trackName, artistName) {
+    const cleanTitle = trackName.split('(')[0].split('-')[0].trim();
+    const cleanArtist = artistName.split(',')[0].split('&')[0].trim();
+    const query = encodeURIComponent(`${cleanArtist} ${cleanTitle}`);
+
+    for (const instance of pipedInstances) {
+        try {
+            // Search for the video
+            const searchRes = await fetch(`${instance}/search?q=${query}&filter=videos`, {
+                signal: AbortSignal.timeout(3000)
+            });
+            if (!searchRes.ok) continue;
+
+            const searchData = await searchRes.json();
+            const video = (searchData.items || []).find(item =>
+                item.title.toLowerCase().includes(cleanTitle.toLowerCase()) ||
+                item.uploaderName.toLowerCase().includes(cleanArtist.toLowerCase())
+            ) || searchData.items[0];
+
+            if (!video || !video.url) continue;
+            const videoId = video.url.split("v=")[1];
+
+            // Get streams for the video
+            const streamRes = await fetch(`${instance}/streams/${videoId}`, {
+                signal: AbortSignal.timeout(3000)
+            });
+            if (!streamRes.ok) continue;
+
+            const streamData = await streamRes.json();
+            const audioStream = (streamData.audioStreams || [])
+                .sort((a, b) => b.bitrate - a.bitrate)[0];
+
+            if (audioStream && audioStream.url) {
+                return audioStream.url;
+            }
+        } catch (e) {
+            console.warn(`Piped instance ${instance} failed:`, e);
+        }
     }
+    return null;
+}
+
+async function playTrack(track) {
+    if (!track || !audio) return;
 
     currentTrack = track;
-    audio.src = track.previewUrl;
-    audio.play();
-
     const artwork = (track.artworkUrl100 || "images/chill_vibes.jpg").replace("100x100", "400x400");
 
+    // UI Early Update
     if (nowPlayingImg) nowPlayingImg.src = artwork;
     if (nowPlayingTitle) nowPlayingTitle.textContent = track.trackName || "Unknown";
     if (nowPlayingArtist) nowPlayingArtist.textContent = track.artistName || "-";
@@ -761,6 +805,26 @@ function playTrack(track) {
     if (fsAlbumArt) fsAlbumArt.src = artwork.replace("400x400", "600x600");
     if (fsTitle) fsTitle.textContent = track.trackName || "";
     if (fsArtist) fsArtist.textContent = track.artistName || "";
+
+    // Set preview as initial source so it starts fast
+    if (track.previewUrl) {
+        audio.src = track.previewUrl;
+        audio.play().catch(() => { });
+    }
+
+    // Try to upgrade to full song
+    console.log("Attempting to fetch full track...");
+    const fullUrl = await fetchFullAudioUrl(track.trackName, track.artistName);
+
+    if (fullUrl) {
+        console.log("Full track found! Switching audio source.");
+        const currentTime = audio.currentTime;
+        audio.src = fullUrl;
+        audio.currentTime = currentTime; // Preserve position if possible (though for 30s it's small)
+        audio.play().catch(() => { });
+    } else {
+        console.warn("Full track not found, sticking with preview.");
+    }
 
     updatePlayerHeartUI();
     updateIcons();
@@ -1051,51 +1115,168 @@ const mockLyrics = [
     "Login, play and vibe all night!"
 ];
 
+function openLyricsView() {
+    if (!lyricsView) return;
+    views.forEach(v => {
+        v.style.display = "none";
+    });
+    lyricsView.style.display = "flex";
+    if (toggleLyricsBtn) toggleLyricsBtn.style.color = "var(--text-bright-accent)";
+    renderLyrics();
+}
+
+function closeLyricsView() {
+    if (!lyricsView) return;
+    lyricsView.style.display = "none";
+    if (toggleLyricsBtn) toggleLyricsBtn.style.color = "var(--text-subdued)";
+    showView("home-view");
+}
+
 function setupLyrics() {
     if (!toggleLyricsBtn || !lyricsView) return;
 
     toggleLyricsBtn.onclick = () => {
         if (lyricsView.style.display === "flex") {
-            lyricsView.style.display = "none";
-            showView("home-view");
-            toggleLyricsBtn.style.color = "var(--text-subdued)";
+            closeLyricsView();
         } else {
-            views.forEach(v => {
-                v.style.display = "none";
-            });
-            lyricsView.style.display = "flex";
-            toggleLyricsBtn.style.color = "var(--text-bright-accent)";
-            renderLyrics();
+            openLyricsView();
         }
     };
 }
 
-function renderLyrics() {
-    if (!lyricsView) return;
+let currentLyricsData = [];
 
-    lyricsView.innerHTML = `<h2 style="font-size: 13px; font-weight: 800; margin-bottom: 60px; color: #fff; opacity: 0.5; letter-spacing: 0.2em;">LYRICS</h2>`;
+async function renderLyrics() {
+    if (!lyricsView || !currentTrack) return;
 
-    mockLyrics.forEach((line, index) => {
-        const p = document.createElement("p");
-        p.className = "lyric-line";
-        p.textContent = line;
-        p.id = `lyric-${index}`;
-        lyricsView.appendChild(p);
+    // Premium Loading Header
+    lyricsView.innerHTML = `
+        <div class="lyrics-header">
+            <div class="lyrics-title">${currentTrack.trackName}</div>
+            <div class="lyrics-artist">Fetching original lyrics for ${currentTrack.artistName}...</div>
+        </div>
+        <div id="lyrics-loading" style="font-size: 24px; font-weight: 700; color: white; opacity: 0.6;">Searching LRCLIB database...</div>
+    `;
+
+    try {
+        // Clean Title/Artist for better matching
+        const cleanTitle = currentTrack.trackName.split('(')[0].split('-')[0].trim();
+        const cleanArtist = currentTrack.artistName.split(',')[0].split('&')[0].trim();
+
+        const artist = encodeURIComponent(cleanArtist);
+        const title = encodeURIComponent(cleanTitle);
+
+        const response = await fetch(`https://lrclib.net/api/get?artist_name=${artist}&track_name=${title}`);
+
+        if (!response.ok) throw new Error("Lyrics not found");
+
+        const data = await response.json();
+
+        lyricsView.innerHTML = `
+            <div class="lyrics-header">
+                <div class="lyrics-title">${currentTrack.trackName}</div>
+                <div class="lyrics-artist">${currentTrack.artistName}</div>
+            </div>
+        `;
+
+        if (data.syncedLyrics) {
+            currentLyricsData = parseSyncedLyrics(data.syncedLyrics);
+        } else if (data.plainLyrics) {
+            currentLyricsData = data.plainLyrics.split('\n').map(line => ({ text: line }));
+        } else {
+            throw new Error("Empty lyrics");
+        }
+
+        currentLyricsData.forEach((line, index) => {
+            const p = document.createElement("p");
+            p.className = "lyric-line";
+            p.textContent = line.text || line;
+            p.id = `lyric-${index}`;
+            lyricsView.appendChild(p);
+        });
+
+        // Add credit
+        const credit = document.createElement("div");
+        credit.style = "margin-top: 60px; font-size: 13px; opacity: 0.4; color: white;";
+        credit.textContent = "Lyrics provided by LRCLIB • Crowdsourced Community Database";
+        lyricsView.appendChild(credit);
+
+    } catch (error) {
+        console.warn("Could not fetch real lyrics:", error);
+
+        lyricsView.innerHTML = `
+            <div class="lyrics-header">
+                <div class="lyrics-title">${currentTrack.trackName}</div>
+                <div class="lyrics-artist">${currentTrack.artistName}</div>
+                <div style="margin-top: 12px; font-size: 14px; color: #ffbc2d; font-weight: 600;">Original lyrics not found. Using synchronized mock lyrics.</div>
+            </div>
+        `;
+
+        // Final fallback to mock lyrics
+        mockLyrics.forEach((line, index) => {
+            const p = document.createElement("p");
+            p.className = "lyric-line";
+            p.textContent = line;
+            p.id = `lyric-${index}`;
+            lyricsView.appendChild(p);
+        });
+        currentLyricsData = mockLyrics.map(line => ({ text: line }));
+    }
+}
+
+function parseSyncedLyrics(lrc) {
+    const lines = lrc.split('\n');
+    const result = [];
+    const timeReg = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+
+    lines.forEach(line => {
+        const timeMatch = line.match(timeReg);
+        if (timeMatch) {
+            const text = line.replace(timeReg, "").trim();
+            if (text) {
+                const matches = line.matchAll(timeReg);
+                for (const match of matches) {
+                    const min = parseInt(match[1]);
+                    const sec = parseInt(match[2]);
+                    const ms = parseInt(match[3]);
+                    const time = min * 60 + sec + ms / (match[3].length === 3 ? 1000 : 100);
+                    result.push({ time, text });
+                }
+            }
+        }
     });
+    return result.sort((a, b) => a.time - b.time);
 }
 
 function updateLyricsSync() {
     if (!lyricsView || lyricsView.style.display !== "flex" || !audio || !audio.duration) return;
 
-    const lines = document.querySelectorAll(".lyric-line");
-    const index = Math.min(mockLyrics.length - 1, Math.floor((audio.currentTime / audio.duration) * mockLyrics.length));
+    let index = -1;
+    const currentTime = audio.currentTime;
 
-    lines.forEach(l => l.classList.remove("active"));
+    if (currentLyricsData.length > 0 && currentLyricsData[0].time !== undefined) {
+        // Use time-based sync
+        for (let i = 0; i < currentLyricsData.length; i++) {
+            if (currentTime >= currentLyricsData[i].time) {
+                index = i;
+            } else {
+                break;
+            }
+        }
+    } else {
+        // Fallback to percentage-based sync (for plain lyrics or mock)
+        index = Math.min(currentLyricsData.length - 1, Math.floor((currentTime / audio.duration) * currentLyricsData.length));
+    }
 
-    const activeLine = document.getElementById(`lyric-${index}`);
-    if (activeLine) {
-        activeLine.classList.add("active");
-        activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (index !== -1) {
+        const lines = document.querySelectorAll(".lyric-line");
+        lines.forEach(l => l.classList.remove("active"));
+
+        const activeLine = document.getElementById(`lyric-${index}`);
+        if (activeLine) {
+            activeLine.classList.add("active");
+            activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
     }
 }
 
