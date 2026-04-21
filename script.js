@@ -51,13 +51,13 @@ function registerUser(username, password) {
     const messageEl = document.getElementById("auth-message");
 
     if (!username || !password) {
-        messageEl.textContent = "Complete username and password.";
+        if (messageEl) messageEl.textContent = "Complete username and password.";
         return;
     }
 
     const exists = users.some(user => user.username.toLowerCase() === username.toLowerCase());
     if (exists) {
-        messageEl.textContent = "This username already exists.";
+        if (messageEl) messageEl.textContent = "This username already exists.";
         return;
     }
 
@@ -74,13 +74,13 @@ function loginUser(username, password) {
     const messageEl = document.getElementById("auth-message");
 
     if (!username || !password) {
-        messageEl.textContent = "Complete username and password.";
+        if (messageEl) messageEl.textContent = "Complete username and password.";
         return;
     }
 
     const user = users.find(u => u.username === username && u.password === password);
     if (!user) {
-        messageEl.textContent = "Wrong username or password.";
+        if (messageEl) messageEl.textContent = "Wrong username or password.";
         return;
     }
 
@@ -91,7 +91,7 @@ function loginUser(username, password) {
 }
 
 function logoutUser() {
-    audio.pause();
+    if (audio) audio.pause();
     isPlaying = false;
     currentTrack = null;
     localStorage.removeItem("spotify_current_user");
@@ -117,6 +117,9 @@ let isShuffle = false;
 let repeatMode = 0;
 let currentQueue = [];
 let shuffledQueue = [];
+
+let viewHistory = [];
+let forwardHistory = [];
 
 const categoryImages = {
     "podcasts": "images/podcasts.jpg",
@@ -162,6 +165,10 @@ const fsPrevBtn = document.getElementById("fs-prev-btn");
 const fsNextBtn = document.getElementById("fs-next-btn");
 const fsShuffleBtn = document.getElementById("fs-shuffle-btn");
 const fsRepeatBtn = document.getElementById("fs-repeat-btn");
+
+const headerNavButtons = document.querySelectorAll("header .circle-nav-btn");
+const headerBackBtn = headerNavButtons[0] || null;
+const headerForwardBtn = headerNavButtons[1] || null;
 
 function getLikedSongs() {
     return currentUser ? currentUser.likedSongs : [];
@@ -338,7 +345,7 @@ function afterLoginSetup() {
     updateProfileUI();
     renderSidebarPlaylists();
     renderHome();
-    showView("home-view");
+    showView("home-view", false);
     updatePlayerHeartUI();
     updateIcons();
 }
@@ -403,7 +410,14 @@ function setupAuthSubmit() {
     });
 }
 
-function showView(viewId) {
+function showView(viewId, addToHistory = true) {
+    const currentVisibleView = Array.from(views).find(v => v.style.display === "block");
+
+    if (addToHistory && currentVisibleView && currentVisibleView.id !== viewId) {
+        viewHistory.push(currentVisibleView.id);
+        forwardHistory = [];
+    }
+
     views.forEach(v => {
         v.style.display = "none";
     });
@@ -454,6 +468,34 @@ function attachBaseEvents() {
         goProfile.addEventListener("click", () => {
             if (!currentUser) return;
             showView("profile-view");
+        });
+    }
+
+    if (headerBackBtn) {
+        headerBackBtn.addEventListener("click", () => {
+            const currentVisibleView = Array.from(views).find(v => v.style.display === "block");
+            if (!viewHistory.length) return;
+
+            const previousView = viewHistory.pop();
+            if (currentVisibleView) {
+                forwardHistory.push(currentVisibleView.id);
+            }
+
+            showView(previousView, false);
+        });
+    }
+
+    if (headerForwardBtn) {
+        headerForwardBtn.addEventListener("click", () => {
+            const currentVisibleView = Array.from(views).find(v => v.style.display === "block");
+            if (!forwardHistory.length) return;
+
+            const nextView = forwardHistory.pop();
+            if (currentVisibleView) {
+                viewHistory.push(currentVisibleView.id);
+            }
+
+            showView(nextView, false);
         });
     }
 

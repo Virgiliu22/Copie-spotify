@@ -844,3 +844,153 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 14px;
   }
 }
+@media (max-width: 768px) {
+  body {
+    grid-template-areas:
+      "main"
+      "player";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    height: 100dvh;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    margin: 0;
+    border-radius: 0;
+    padding-bottom: 180px;
+  }
+
+  header {
+    padding: 12px 16px;
+  }
+
+  .header-pill-btn,
+  .header-dark-btn {
+    display: none;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+
+  .card-description {
+    font-size: 12px;
+  }
+
+  .playlist-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 16px;
+  }
+
+  .playlist-img {
+    width: 160px;
+    height: 160px;
+  }
+
+  #playlist-title {
+    font-size: 28px !important;
+    letter-spacing: -1px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-avatar {
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile-info h1 {
+    font-size: 32px;
+  }
+
+  .track-row {
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .track-row > span:nth-child(3),
+  .track-row > div:last-child span {
+    display: none;
+  }
+
+  .player-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    height: auto;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    gap: 10px;
+    background: #000;
+  }
+
+  .now-playing {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .now-playing img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .player-controls {
+    width: 100%;
+    gap: 10px;
+  }
+
+  .control-buttons {
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .progress-bar-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  .player-extra {
+    width: 100%;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .player-extra button,
+  .player-extra div {
+    display: none;
+  }
+
+  #toggle-lyrics,
+  #toggle-fullscreen {
+    display: flex !important;
+  }
+
+  #spotify-search {
+    width: 100% !important;
+  }
+}
