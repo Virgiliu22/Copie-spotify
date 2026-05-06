@@ -1,60 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spotify Clone</title>
+  <title>Spotify - Web Player: Music for everyone</title>
+  <link rel="icon" type="image/png" href="https://open.spotifycdn.com/cdn/images/icons/Spotify_1024.31b25879.png">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
-
-  <!-- AUTH OVERLAY -->
-  <div id="auth-overlay">
-    <div class="auth-card">
-      <h1>Spotify Clone</h1>
-      <p>Create an account or log in</p>
-
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="login-tab">Login</button>
-        <button class="auth-tab" id="register-tab">Register</button>
-      </div>
-
-      <div class="auth-form">
-        <input type="text" id="auth-username" placeholder="Username">
-        <input type="password" id="auth-password" placeholder="Password">
-        <button id="auth-submit-btn">Login</button>
-        <p id="auth-message"></p>
-      </div>
-    </div>
-  </div>
 
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-box">
+      <div class="logo-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="130" height="40" viewBox="0 0 120 60">
+          <path d="M22.123 11.828C12.07 11.828 3.952 19.97 3.952 30c0 10.052 8.14 18.172 18.172 18.172 10.052 0 18.172-8.14 18.172-18.172s-8.14-18.172-18.172-18.172zm8.337 26.226c-.326.543-1.02.695-1.563.37-4.277-2.605-9.64-3.19-15.98-1.76-.608.13-1.216-.24-1.346-.847s.24-1.216.847-1.346c6.926-1.585 12.874-.912 17.65 2.02.543.326.716 1.02.39 1.563zm2.214-4.95c-.412.673-1.28.868-1.954.478-4.885-2.996-12.33-3.864-18.106-2.128-.76.217-1.54-.195-1.76-.934-.217-.76.195-1.54.955-1.76 6.6-1.997 14.806-1.042 20.43 2.4.65.39.847 1.26.434 1.932zm.195-5.167c-5.862-3.474-15.523-3.8-21.124-2.106-.9.282-1.845-.24-2.128-1.13s.24-1.845 1.13-2.128c6.426-1.954 17.108-1.563 23.838 2.432.803.478 1.064 1.52.586 2.323-.434.825-1.498 1.086-2.3.608z" fill="#1ed760"/>
+          <g transform="matrix(.21375 0 0 .21375 .138028 12.655604)" fill="#ffffff">
+            <path d="M232.1 78.6c-14.5-3.4-17-5.9-17-11 0-4.8 4.5-8 11.2-8 6.5 0 13 2.5 19.8 7.5.2.2.5.2.7.2.3 0 .5-.2.6-.4l7.1-10a.95.95 0 0 0-.2-1.3c-8.1-6.5-17.2-9.6-27.8-9.6-15.6 0-26.5 9.4-26.5 22.8 0 14.4 9.4 19.5 25.7 23.4 13.8 3.2 16.2 5.9 16.2 10.6 0 5.3-4.7 8.6-12.3 8.6-8.4 0-15.3-2.8-23-9.5-.2-.2-.5-.2-.7-.2-.3 0-.5.1-.6.3l-7.9 9.4c-.3.4-.3 1 .1 1.3 9 8 20 12.2 31.9 12.2 16.8 0 27.7-9.2 27.7-23.4-.2-12-7.4-18.6-25-22.9zM295 64.3c-7.3 0-13.3 2.9-18.2 8.8v-6.6c0-.5-.4-.9-.9-.9H263c-.5 0-.9.4-.9.9v73.6c0 .5.4.9.9.9h12.9c.5 0 .9-.4.9-.9v-23.2c4.9 5.5 10.9 8.2 18.2 8.2 13.5 0 27.3-10.4 27.3-30.4-.1-19.9-13.8-30.4-27.3-30.4zm12.2 30.4c0 10.2-6.3 17.2-15.2 17.2s-15.5-7.4-15.5-17.2 6.7-17.2 15.5-17.2 15.2 7.2 15.2 17.2zm50.2-30.4c-17.4 0-31.1 13.4-31.1 30.6 0 17 13.6 30.3 30.9 30.3 17.5 0 31.2-13.4 31.2-30.5 0-17-13.6-30.4-31-30.4zm0 47.7c-9.3 0-16.3-7.5-16.3-17.3 0-9.9 6.8-17.1 16.1-17.1s16.4 7.5 16.4 17.4c-.1 9.8-6.9 17-16.2 17zm68.2-46.5h-14.2V50.9c0-.5-.4-.9-.9-.9h-12.9c-.5 0-.9.4-.9.9v14.6h-6.2c-.5 0-.9.4-.9.9v11.1c0 .5.4.9.9.9h6.2v28.8c0 11.6 5.8 17.5 17.2 17.5 4.6 0 8.5-1 12.1-3 .3-.2.5-.5.5-.8v-10.6c0-.3-.2-.6-.4-.8-.3-.2-.6-.2-.9 0-2.5 1.3-4.9 1.8-7.6 1.8-4.2 0-6-1.9-6-6.1V78.5h14.2c.5 0 .9-.4.9-.9V66.5c-.1-.6-.5-1-1.1-1zm49.7.1v-1.8c0-5.3 2-7.6 6.5-7.6 2.7 0 4.9.5 7.3 1.3.3.1.6 0 .9-.1.2-.2.4-.5.4-.8V45.7c0-.4-.3-.8-.7-.9-2.6-.8-5.8-1.5-10.8-1.5-12 0-18.3 6.7-18.3 19.5v2.7h-6.2c-.5 0-1 .4-1 .9v11.2c0 .5.4.9 1 .9h6.2v44.4c0 .5.4.9.9.9h12.9c.5 0 .9-.4.9-.9V78.5h12.1l18.5 44.4c-2.1 4.7-4.2 5.6-7 5.6-2.3 0-4.7-.7-7.1-2-.2-.1-.5-.1-.8-.1-.2.1-.5.3-.6.5l-4.4 9.6c-.2.5 0 1 .4 1.2 4.6 2.5 8.7 3.5 13.8 3.5 9.6 0 14.8-4.5 19.5-16.4l22.5-58c.1-.3.1-.6-.1-.9s-.5-.4-.8-.4h-13.5c-.4 0-.8.3-.9.6l-13.8 39.4L498 66c-.1-.4-.5-.6-.9-.6h-21.8zm-28.8-.1h-12.9c-.5 0-.9.4-.9.9v56.5c0 .5.4.9.9.9h12.9c.5 0 .9-.4.9-.9V66.5c.1-.6-.4-1-.9-1z"/>
+            <circle cx="440.1" cy="49.1" r="9.3"/>
+          </g>
+        </svg>
+      </div>
       <ul class="nav-list">
         <li class="nav-item active" id="nav-home"><i data-lucide="home"></i> Home</li>
-        <li class="nav-item" id="nav-search"><i data-lucide="search"></i> Search songs</li>
+        <li class="nav-item" id="nav-search"><i data-lucide="search"></i> Search</li>
       </ul>
     </div>
 
     <div class="library-box">
-      <div class="library-top-row">
-        <div class="library-title">
-          <i data-lucide="library"></i> Your Library
-        </div>
-        <div class="library-actions">
-          <button class="icon-btn" id="create-playlist-btn" title="Create Playlist">
-            <i data-lucide="plus"></i>
-          </button>
-        </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-subdued);">
+        <div style="display: flex; gap: 12px; align-items: center; font-weight: 700;"><i data-lucide="library"></i> Your
+          Library</div>
+        <i data-lucide="plus" style="cursor: pointer;"></i>
       </div>
 
-      <div class="library-filter-row">
-        <span class="library-chip">Playlists</span>
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <span
+          style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer;">Playlists</span>
       </div>
 
-      <div id="sidebar-playlists" class="sidebar-playlists"></div>
+      <div
+        style="flex:1; overflow-y: auto; margin-top: 20px; display: flex; flex-direction: column; gap: 16px; scrollbar-width: none;"
+        id="sidebar-playlists">
+        <div class="nav-item playlist-item" data-id="liked" style="font-size: 14px; font-weight: 400;"><img
+            src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=48&h=48&fit=crop"
+            style="border-radius: 4px; width: 48px;">Liked Songs</div>
+        <div class="nav-item playlist-item" data-id="chill" style="font-size: 14px; font-weight: 400;"><img
+            src="https://picsum.photos/seed/playlist/48/48" style="border-radius: 4px; width: 48px;">Chill Vibes</div>
+      </div>
     </div>
   </aside>
 
@@ -62,28 +58,36 @@
   <main class="main-content">
     <header>
       <div style="display: flex; gap: 8px;">
-<button class="circle-nav-btn" id="header-back-btn"><i data-lucide="chevron-left"></i></button>
-<button class="circle-nav-btn" id="header-forward-btn"><i data-lucide="chevron-right"></i></button>
+        <button
+          style="background: rgba(0,0,0,0.7); border: none; border-radius: 50%; color: white; width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s;"><i
+            data-lucide="chevron-left"></i></button>
+        <button
+          style="background: rgba(0,0,0,0.7); border: none; border-radius: 50%; color: white; width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s;"><i
+            data-lucide="chevron-right"></i></button>
       </div>
-
       <div style="display: flex; gap: 16px; align-items: center;">
-        <button class="header-pill-btn" id="explore-premium-btn">Get Premium</button>
-
+        <button
+          style="background: white; color: black; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 800; cursor: pointer; font-size: 14px; transition: transform 0.2s;"
+          id="explore-premium-btn">Explore Premium</button>
         <a href="https://www.spotify.com/download" target="_blank" style="text-decoration: none;">
-          <button class="header-dark-btn">
-            <i data-lucide="arrow-down-circle" size="18"></i> Install App
-          </button>
+          <button
+            style="background: rgba(0,0,0,0.7); border: none; padding: 10px 20px; border-radius: 30px; font-weight: 800; color: white; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; transition: transform 0.2s;"><i
+              data-lucide="arrow-down-circle" size="18"></i> Install App</button>
         </a>
 
         <div style="position: relative;">
-          <div id="user-btn" class="user-btn">
+          <div id="user-btn"
+            style="background: var(--background-base); padding: 4px; border-radius: 50%; cursor: pointer; transition: transform 0.2s;">
             <i data-lucide="user"></i>
           </div>
-
-          <div id="user-dropdown" class="user-dropdown">
-            <div class="dropdown-item" id="go-profile">Profile <i data-lucide="external-link" size="14"></i></div>
-            <div class="dropdown-item" id="add-current-to-playlist">Add current song to playlist</div>
-            <div class="dropdown-item" id="do-logout">Log out</div>
+          <div id="user-dropdown"
+            style="display: none; position: absolute; top: 44px; right: 0; background: #282828; border-radius: 4px; padding: 4px; width: 180px; box-shadow: 0 16px 32px rgba(0,0,0,0.6); z-index: 200;">
+            <div class="dropdown-item" id="go-profile"
+              style="padding: 14px; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 500;">
+              Profile <i data-lucide="external-link" size="14"></i></div>
+            <div class="dropdown-item" id="do-logout"
+              style="padding: 14px; font-size: 14px; cursor: pointer; border-top: 1px solid #3e3e3e; font-weight: 500;">
+              Log out</div>
           </div>
         </div>
       </div>
@@ -91,15 +95,18 @@
 
     <!-- Home View -->
     <div id="home-view" class="view content-section">
-      <h2 style="font-size: 34px; font-weight: 900; margin-bottom: 24px; letter-spacing: -1px;">Welcome back</h2>
-      <div class="grid-container" id="home-grid"></div>
+      <h2 style="font-size: 34px; font-weight: 900; margin-bottom: 24px; letter-spacing: -1px;">Good evening</h2>
+      <div class="grid-container" id="home-grid">
+        <!-- Cards injected by JS -->
+      </div>
     </div>
 
     <!-- Search View -->
     <div id="search-view" class="view content-section">
       <div style="position: sticky; top: 64px; background: inherit; padding-bottom: 24px; z-index: 50;">
         <div style="position: relative; max-width: 364px;">
-          <i data-lucide="search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #000;" size="22"></i>
+          <i data-lucide="search"
+            style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #000;" size="22"></i>
           <input type="text" id="spotify-search" placeholder="What do you want to play?"
             style="width: 100%; padding: 14px 14px 14px 52px; border-radius: 30px; border: none; font-size: 15px; font-weight: 500; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s;">
         </div>
@@ -108,21 +115,25 @@
       <div id="browse-all-container">
         <h3 style="font-size: 24px; margin-bottom: 16px; font-weight: 900; letter-spacing: -0.5px;">Browse all</h3>
         <div class="grid-container" id="category-grid">
-          <div class="category-card" style="background: linear-gradient(135deg, #27856A 0%, #1E3264 100%);" onclick="renderPlaylist('podcasts', '#27856A')">
+          <div class="category-card" style="background: linear-gradient(135deg, #27856A 0%, #1E3264 100%);">
             <span class="card-title">Podcasts</span>
-            <img src="images/podcasts.jpg" alt="Podcasts" onerror="this.style.display='none'">
+            <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=300&h=300&fit=crop" alt="Podcasts"
+              onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #1E3264 0%, #4D4D4D 100%);" onclick="renderPlaylist('made for you', '#1E3264')">
+          <div class="category-card" style="background: linear-gradient(135deg, #1E3264 0%, #4D4D4D 100%);">
             <span class="card-title">Made for You</span>
-            <img src="images/made_for_you.jpg" alt="Made for You" onerror="this.style.display='none'">
+            <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300&h=300&fit=crop"
+              alt="Made for You" onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #E8115B 0%, #8D67AB 100%);" onclick="renderPlaylist('new releases', '#E8115B')">
+          <div class="category-card" style="background: linear-gradient(135deg, #E8115B 0%, #8D67AB 100%);">
             <span class="card-title">New Releases</span>
-            <img src="images/new_releases.jpg" alt="New Releases" onerror="this.style.display='none'">
+            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop"
+              alt="New Releases" onerror="this.style.display='none'">
           </div>
-          <div class="category-card" style="background: linear-gradient(135deg, #2D46B9 0%, #1E3264 100%);" onclick="renderPlaylist('pop', '#2D46B9')">
+          <div class="category-card" style="background: linear-gradient(135deg, #2D46B9 0%, #1E3264 100%);">
             <span class="card-title">Pop</span>
-            <img src="images/pop.jpg" alt="Pop" onerror="this.style.display='none'">
+            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&h=300&fit=crop" alt="Pop"
+              onerror="this.style.display='none'">
           </div>
         </div>
       </div>
@@ -138,12 +149,12 @@
       <div class="profile-header">
         <img id="profile-avatar-img" class="profile-avatar" src="" alt="Avatar">
         <div class="profile-info">
-          <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Profile</span>
+          <span
+            style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;">Profile</span>
           <h1 id="profile-name"></h1>
           <div style="display: flex; gap: 8px; align-items: center; font-size: 14px; color: #fff; opacity: 0.8;">
-            <span id="profile-playlists">0 Playlists</span> •
-            <span id="profile-followers">0 Followers</span> •
-            <span id="profile-following">0 Following</span>
+            <span id="profile-playlists">10 Public Playlists</span> • <span id="profile-followers">143 Followers</span>
+            • <span id="profile-following">90 Following</span>
           </div>
         </div>
       </div>
@@ -155,118 +166,157 @@
         <img id="playlist-img" class="playlist-img" src="" alt="Playlist">
         <div class="playlist-info">
           <span style="font-size: 13px; font-weight: 700; text-transform: uppercase;">Playlist</span>
-          <h1 id="playlist-title" style="font-size: 72px; font-weight: 900; margin: 8px 0; letter-spacing: -3px;">Favorite Songs</h1>
+          <h1 id="playlist-title" style="font-size: 72px; font-weight: 900; margin: 8px 0; letter-spacing: -3px;">Liked
+            Songs</h1>
           <div style="display: flex; gap: 8px; align-items: center; font-size: 14px;">
-            <span id="playlist-owner" style="font-weight: 800;">User</span> •
-            <span id="playlist-track-count">0 songs</span>
+            <span style="font-weight: 800;">Grigorii & Vergiliu</span> • <span id="playlist-track-count">0 songs</span>
           </div>
         </div>
       </div>
-      <div class="track-list" id="playlist-tracks"></div>
+      <div class="track-list" id="playlist-tracks">
+        <!-- Tracks injected by JS -->
+      </div>
     </div>
 
     <!-- Lyrics View -->
-    <div id="lyrics-view"></div>
+    <div id="lyrics-view">
+      <!-- Lyrics injected by JS -->
+    </div>
+
+    <!-- Queue View -->
+    <div id="queue-view" class="view content-section">
+      <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 24px;">Queue</h2>
+      <h3 style="font-size: 16px; color: var(--text-subdued); margin-bottom: 16px;">Now Playing</h3>
+      <div id="queue-now-playing"></div>
+      <h3 style="font-size: 16px; color: var(--text-subdued); margin-top: 32px; margin-bottom: 16px;">Next Up</h3>
+      <div id="queue-next-up"></div>
+    </div>
+
   </main>
 
   <!-- Player Bar -->
   <footer class="player-bar">
     <div class="now-playing">
-      <img src="images/chill_vibes.jpg" alt="Current Track">
+      <img src="https://picsum.photos/seed/current/56/56" alt="Current Track">
       <div style="display: flex; flex-direction: column; gap: 4px; overflow: hidden; max-width: 180px;">
-        <span style="font-size: 14px; font-weight: 400; cursor: pointer; color: white; white-space: nowrap; text-overflow: ellipsis;" id="current-track-title">Select a song</span>
+        <span
+          style="font-size: 14px; font-weight: 400; cursor: pointer; color: white; white-space: nowrap; text-overflow: ellipsis;"
+          id="current-track-title">Select a song</span>
         <span style="font-size: 11px; color: var(--text-subdued); cursor: pointer;" id="current-track-artist">-</span>
       </div>
-      <button id="player-heart-btn" style="background: transparent; border: none; margin-left: 12px; color: var(--text-subdued); cursor: pointer; display: flex; align-items: center; transition: transform 0.2s;">
+      <button id="player-heart-btn"
+        style="background: transparent; border: none; margin-left: 12px; color: var(--text-subdued); cursor: pointer; display: flex; align-items: center; transition: transform 0.2s;">
         <i data-lucide="heart" size="18"></i>
       </button>
     </div>
 
     <div class="player-controls">
       <div class="control-buttons">
-        <button class="player-control-btn" id="shuffle-btn"><i data-lucide="shuffle" size="18"></i></button>
-        <button class="player-control-btn" id="prev-btn"><i data-lucide="skip-back" fill="white" size="22"></i></button>
-        <button class="play-pause-btn" id="play-pause-btn-main"><i data-lucide="play" fill="black" size="20"></i></button>
-        <button class="player-control-btn" id="next-btn"><i data-lucide="skip-forward" fill="white" size="22"></i></button>
-        <button class="player-control-btn" id="repeat-btn"><i data-lucide="repeat" size="18"></i></button>
+        <button id="shuffle-btn" class="player-control-btn"><i data-lucide="shuffle" size="18"></i></button>
+        <button id="prev-btn" class="player-control-btn"><i data-lucide="skip-back" size="22" fill="white"></i></button>
+        <button class="play-pause-btn" id="play-pause-btn-main">
+          <i data-lucide="play" class="icon-play" fill="black" size="20"></i>
+          <i data-lucide="pause" class="icon-pause" fill="black" size="20" style="display: none;"></i>
+        </button>
+        <button id="next-btn" class="player-control-btn"><i data-lucide="skip-forward" size="22" fill="white"></i></button>
+        <button id="repeat-btn" class="player-control-btn"><i data-lucide="repeat" size="18"></i></button>
       </div>
       <div class="progress-bar-container">
-        <span>0:00</span>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
-        <span>0:00</span>
+        <span id="current-time">0:00</span>
+        <input type="range" id="progress-slider" min="0" max="100" value="0" step="0.1">
+        <span id="total-time">0:00</span>
       </div>
     </div>
 
     <div class="player-extra">
-      <button class="player-extra-btn" id="toggle-lyrics"><i data-lucide="mic-2" style="color: var(--text-subdued);" size="16"></i></button>
-      <button class="player-extra-btn"><i data-lucide="list-music" style="color: var(--text-subdued);" size="16"></i></button>
-      <button class="player-extra-btn"><i data-lucide="speaker" style="color: var(--text-subdued);" size="16"></i></button>
+      <button id="toggle-lyrics" class="player-control-btn"><i data-lucide="mic-2" size="16"></i></button>
+      <button id="toggle-queue" class="player-control-btn"><i data-lucide="list-music" size="16"></i></button>
+      <button id="toggle-connect" class="player-control-btn"><i data-lucide="speaker" size="16"></i></button>
       <div style="display: flex; align-items: center; gap: 10px;">
         <i data-lucide="volume-2" style="color: var(--text-subdued);" size="16"></i>
-        <input type="range" id="volume-slider" min="0" max="100" value="50">
+        <input type="range" id="volume-slider" min="0" max="100" value="70">
       </div>
-      <button class="player-extra-btn" id="toggle-fullscreen"><i data-lucide="maximize-2" style="color: var(--text-subdued);" size="16"></i></button>
+      <button id="toggle-fullscreen" class="player-control-btn"><i data-lucide="maximize-2" size="16"></i></button>
     </div>
   </footer>
 
   <!-- Full Screen Overlay -->
   <div id="full-screen-overlay">
-    <button style="position: absolute; top: 40px; right: 40px; background: transparent; border: none; color: white; cursor: pointer; transition: transform 0.2s;" id="close-fullscreen">
+    <button
+      style="position: absolute; top: 40px; right: 40px; background: transparent; border: none; color: white; cursor: pointer; transition: transform 0.2s;"
+      id="close-fullscreen">
       <i data-lucide="minimize-2"></i>
     </button>
-    <img id="fs-album-art" src="" style="width: 440px; height: 440px; border-radius: 12px; box-shadow: 0 32px 80px rgba(0,0,0,0.9); margin-bottom: 48px;">
+    <img id="fs-album-art" src=""
+      style="width: 440px; height: 440px; border-radius: 12px; box-shadow: 0 32px 80px rgba(0,0,0,0.9); margin-bottom: 48px;">
     <h1 id="fs-title" style="font-size: 56px; font-weight: 900; margin-bottom: 12px; letter-spacing: -2px;"></h1>
     <h2 id="fs-artist" style="font-size: 28px; color: var(--text-subdued); margin-bottom: 48px; font-weight: 500;"></h2>
 
     <div style="display: flex; gap: 48px; align-items: center;">
-      <button class="player-control-btn" id="fs-shuffle-btn"><i data-lucide="shuffle" size="24"></i></button>
-      <button class="player-control-btn" id="fs-prev-btn"><i data-lucide="skip-back" size="56" fill="white"></i></button>
-      <button id="fs-play-pause" style="width: 88px; height: 88px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
-        <i data-lucide="play" fill="#000" size="36"></i>
+      <i data-lucide="shuffle" id="fs-shuffle-btn" size="24" style="cursor: pointer; color: var(--text-subdued);"></i>
+      <i data-lucide="skip-back" id="fs-prev-btn" size="56" fill="white" style="cursor: pointer;"></i>
+      <button id="fs-play-pause"
+        style="width: 88px; height: 88px; border-radius: 50%; background: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+        <i data-lucide="play" class="icon-play" fill="#000" size="36"></i>
+        <i data-lucide="pause" class="icon-pause" fill="#000" size="36" style="display: none;"></i>
       </button>
-      <button class="player-control-btn" id="fs-next-btn"><i data-lucide="skip-forward" size="56" fill="white"></i></button>
-      <button class="player-control-btn" id="fs-repeat-btn"><i data-lucide="repeat" size="24"></i></button>
+      <i data-lucide="skip-forward" id="fs-next-btn" size="56" fill="white" style="cursor: pointer;"></i>
+      <i data-lucide="repeat" id="fs-repeat-btn" size="24" style="cursor: pointer; color: var(--text-subdued);"></i>
     </div>
   </div>
 
   <!-- Premium Modal -->
   <div class="modal-overlay" id="premium-modal">
     <div class="modal-content">
-      <button style="position: absolute; top: 24px; right: 24px; background: transparent; border: none; color: white; cursor: pointer; transition: transform 0.2s;" id="close-premium">
+      <button
+        style="position: absolute; top: 24px; right: 24px; background: transparent; border: none; color: white; cursor: pointer; transition: transform 0.2s;"
+        id="close-premium">
         <i data-lucide="x" size="24"></i>
       </button>
-      <h1 style="font-size: 44px; margin-bottom: 12px; font-weight: 900; letter-spacing: -1.5px;">Experience Premium</h1>
-      <p style="color: var(--text-subdued); margin-bottom: 40px; font-size: 18px; font-weight: 500;">Choose the plan that's right for you.</p>
+      <h1 style="font-size: 44px; margin-bottom: 12px; font-weight: 900; letter-spacing: -1.5px;">Experience Premium
+      </h1>
+      <p style="color: var(--text-subdued); margin-bottom: 40px; font-size: 18px; font-weight: 500;">Choose the plan
+        that's right for you.</p>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
         <div class="premium-card">
-          <span style="font-weight: 900; background: #fff; color: #000; padding: 4px 10px; border-radius: 4px; align-self: flex-start; font-size: 11px; text-transform: uppercase;">Premium Individual</span>
-          <p style="font-size: 28px; font-weight: 900;">$9.99 <span style="font-size: 14px; font-weight: 500; opacity: 0.6;">/ month</span></p>
+          <span
+            style="font-weight: 900; background: #fff; color: #000; padding: 4px 10px; border-radius: 4px; align-self: flex-start; font-size: 11px; text-transform: uppercase;">Premium
+            Individual</span>
+          <p style="font-size: 28px; font-weight: 900;">$9.99 <span
+              style="font-size: 14px; font-weight: 500; opacity: 0.6;">/ month</span></p>
           <ul style="list-style: none; font-size: 15px; display: flex; flex-direction: column; gap: 10px; color: #ddd;">
             <li>✓ Ad-free music listening</li>
             <li>✓ Download to listen offline</li>
             <li>✓ Play songs in any order</li>
           </ul>
-          <button style="margin-top: 16px; background: #1ed760; border: none; padding: 14px; border-radius: 30px; font-weight: 900; cursor: pointer; font-size: 14px; transition: transform 0.2s;">Get Started</button>
+          <button
+            style="margin-top: 16px; background: #1ed760; border: none; padding: 14px; border-radius: 30px; font-weight: 900; cursor: pointer; font-size: 14px; transition: transform 0.2s;">Get
+            Started</button>
         </div>
         <div class="premium-card">
-          <span style="font-weight: 900; background: #ffcf7d; color: #000; padding: 4px 10px; border-radius: 4px; align-self: flex-start; font-size: 11px; text-transform: uppercase;">Premium Student</span>
-          <p style="font-size: 28px; font-weight: 900;">$4.99 <span style="font-size: 14px; font-weight: 500; opacity: 0.6;">/ month</span></p>
+          <span
+            style="font-weight: 900; background: #ffcf7d; color: #000; padding: 4px 10px; border-radius: 4px; align-self: flex-start; font-size: 11px; text-transform: uppercase;">Premium
+            Student</span>
+          <p style="font-size: 28px; font-weight: 900;">$4.99 <span
+              style="font-size: 14px; font-weight: 500; opacity: 0.6;">/ month</span></p>
           <ul style="list-style: none; font-size: 15px; display: flex; flex-direction: column; gap: 10px; color: #ddd;">
             <li>✓ Verified student discount</li>
             <li>✓ All Individual features</li>
             <li>✓ Access to Hulu & SHOWTIME</li>
           </ul>
-          <button style="margin-top: 16px; background: #1ed760; border: none; padding: 14px; border-radius: 30px; font-weight: 900; cursor: pointer; font-size: 14px; transition: transform 0.2s;">Get Started</button>
+          <button
+            style="margin-top: 16px; background: #1ed760; border: none; padding: 14px; border-radius: 30px; font-weight: 900; cursor: pointer; font-size: 14px; transition: transform 0.2s;">Get
+            Started</button>
         </div>
       </div>
-      <p style="margin-top: 32px; font-size: 11px; color: var(--text-subdued); line-height: 1.5;">Terms and conditions apply. Open only to users who haven't already tried Premium.</p>
+      <p style="margin-top: 32px; font-size: 11px; color: var(--text-subdued); line-height: 1.5;">Terms and conditions
+        apply. Open only to users who haven't already tried Premium.</p>
     </div>
   </div>
 
   <audio id="spotify-audio"></audio>
   <script src="script.js"></script>
 </body>
+
 </html>
